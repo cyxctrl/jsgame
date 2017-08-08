@@ -1,6 +1,6 @@
-class Scene {
+class SceneMain extends GuaScene {
     constructor(game) {
-        this.game = game
+        super(game)
         this.paddle = Paddle(game)
         this.ball = Ball(game)
         this.score = 0
@@ -14,30 +14,30 @@ class Scene {
     }
 
     setup() {
-        this.game.registerAction("a", () => {
+        this.registerAction("a", () => {
             this.paddle.moveLeft()
         })
-        this.game.registerAction("d", () => {
+        this.registerAction("d", () => {
             this.paddle.moveRight()
         })
-        this.game.registerAction("f", () => {
+        this.registerAction("f", () => {
             this.ball.fire()
         })
 
-        this.game.registerAction("1", () => {
+        this.registerAction("1", () => {
             this.blocks = loadLevel(this.game, 1)
         })
 
-        this.game.registerAction("2", () => {
+        this.registerAction("2", () => {
             this.blocks = loadLevel(this.game, 2)
         })
 
-        this.game.registerAction("3", () => {
+        this.registerAction("3", () => {
             this.blocks = loadLevel(this.game, 3)
         })
 
         // mouse event
-        this.game.canvas.addEventListener("mousedown", event => {
+        this.canvas.addEventListener("mousedown", event => {
             var x = event.offsetX
             var y = event.offsetY
             // 检查是否点中了 ball
@@ -47,16 +47,15 @@ class Scene {
             }
         })
 
-        this.game.canvas.addEventListener("mousemove", event => {
-            var x = event.offsetX
-            var y = event.offsetY
+        this.canvas.addEventListener("mousemove", event => {
+            log('event', event)
             if (this.enableDrag) {
-                this.ball.x = x
-                this.ball.y = y
+                this.ball.x = event.offsetX
+                this.ball.y = event.offsetY
             }
         })
 
-        this.game.canvas.addEventListener("mouseup", event => {
+        this.canvas.addEventListener("mouseup", event => {
             var x = event.offsetX
             var y = event.offsetY
             this.enableDrag = false
@@ -65,23 +64,23 @@ class Scene {
 
     draw() {
         // draw 背景
-        this.game.context.fillStyle = "#fff"
-        this.game.context.fillRect(0, 0, 400, 300)
+        this.context.fillStyle = "#fff"
+        this.context.fillRect(0, 0, 400, 300)
 
         // draw
-        this.game.drawImage(this.paddle)
-        this.game.drawImage(this.ball)
+        this.drawImage(this.paddle)
+        this.drawImage(this.ball)
 
         // draw blocks
         for (var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i]
             if (block.alive) {
-                this.game.drawImage(block)
+                this.drawImage(block)
             }
         }
         // draw labels
-        this.game.context.fillStyle = "#000"
-        this.game.context.fillText("分数: " + this.score, 10, 290)
+        this.context.fillStyle = "#000"
+        this.context.fillText("分数: " + this.score, 10, 290)
     }
 
     update() {
@@ -105,7 +104,6 @@ class Scene {
         for (var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i]
             if (block.collide(this.ball)) {
-                // log('block 相撞')
                 block.kill()
                 this.ball.反弹()
                 // 更新分数

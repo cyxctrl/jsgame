@@ -22,6 +22,7 @@ var enableDebugMode = function(game, enable) {
             window.paused = !window.paused
         }
     })
+    
     // 控制速度
     document.querySelector('#id-input-speed').addEventListener('input', function(event) {
         var input = event.target
@@ -37,7 +38,7 @@ var __main = function() {
     }
 
     var game = GuaGame.instance(30, images, function(g) {
-        var s = Scene.new(g)
+        var s = SceneTitle.new(g)
         g.runWithScene(s)
     })
 
