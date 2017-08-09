@@ -77,6 +77,11 @@ class GuaGame {
         return image
     }
 
+    textureByName(name) {
+        var img = this.images[name]
+        return img
+    }
+
     runWithScene(scene) {
         this.scene = scene
         // 开始运行程序

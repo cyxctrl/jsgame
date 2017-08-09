@@ -1,10 +1,10 @@
 class SceneMain extends GuaScene {
     constructor(game) {
         super(game)
-        this.paddle = Paddle(game)
-        this.ball = Ball(game)
-        this.score = 0
+        this.paddle = Paddle.new(game)
+        this.ball = Ball.new(game)
         this.blocks = loadLevel(game, 1)
+        this.score = 0
         this.enableDrag = false
         this.setup()
     }
@@ -48,7 +48,7 @@ class SceneMain extends GuaScene {
         })
 
         this.canvas.addEventListener("mousemove", event => {
-            log('event', event)
+            // log('event', event)
             if (this.enableDrag) {
                 this.ball.x = event.offsetX
                 this.ball.y = event.offsetY
@@ -98,14 +98,14 @@ class SceneMain extends GuaScene {
         // 判断相撞
         if (this.paddle.collide(this.ball)) {
             // 这里应该调用一个 ball.反弹() 来实现
-            this.ball.反弹()
+            this.ball.rebound()
         }
         // 判断 ball 和 blocks 相撞
         for (var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i]
             if (block.collide(this.ball)) {
                 block.kill()
-                this.ball.反弹()
+                this.ball.rebound()
                 // 更新分数
                 this.score += 100
             }

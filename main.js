@@ -4,7 +4,7 @@ var loadLevel = function(game, n) {
     var blocks = []
     for (var i = 0; i < level.length; i++) {
         var p = level[i]
-        var b = Block(game, p)
+        var b = Block.new(game, p)
         blocks.push(b)
     }
     return blocks
@@ -22,7 +22,7 @@ var enableDebugMode = function(game, enable) {
             window.paused = !window.paused
         }
     })
-    
+
     // 控制速度
     document.querySelector('#id-input-speed').addEventListener('input', function(event) {
         var input = event.target
