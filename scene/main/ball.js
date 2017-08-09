@@ -1,35 +1,31 @@
-var Ball = function(game) {
-    var o = game.imageByName('ball')
-    // var image = imageFromPath('ball.png')
-    o.x = 100
-    o.y = 200
-    o.speedX = 5
-    o.speedY = 5
-    o.fired = false
-    o.fire = function() {
-        o.fired = true
+class Ball extends GuaImage{
+    constructor(game) {
+        super(game, 'ball')
+        this.x = 100
+        this.y = 200
+        this.speedX = 5
+        this.speedY = 5
+        this.fired = false
     }
-    o.move = function() {
-        if (o.fired) {
-            // log('move')
-            if (o.x < 0 || o.x > 400) {
-                o.speedX = -o.speedX
+
+    fire() {
+        this.fired = true
+    }
+
+    move() {
+        if (this.fired) {
+            if (this.x < 0 || this.x > 400) {
+                this.speedX = -this.speedX
             }
-            if (o.y < 0 || o.y > 300) {
-                o.speedY = -o.speedY
+            if (this.y < 0 || this.y > 300) {
+                this.speedY = -this.speedY
             }
             // move
-            o.x += o.speedX
-            o.y += o.speedY
+            this.x += this.speedX
+            this.y += this.speedY
         }
     }
-    o.反弹 = function() {
-        o.speedY *= -1
+    rebound() {
+        this.speedY *= -1
     }
-    o.hasPoint = function(x, y) {
-        var xIn = x >= o.x && x <= o.x + o.w
-        var yIn = y >= o.y && y <= o.y + o.h
-        return xIn && yIn
-    }
-    return o
 }

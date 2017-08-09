@@ -5,28 +5,14 @@ class GuaGame {
         this.images = images
         this.runCallback = runCallback
         this.scene = null
-        this.actions = {}
-        this.keydowns = {}
-        this.canvas = document.querySelector("#id-canvas")
-        this.context = this.canvas.getContext("2d")
+
         this.init()
-        // events
-        window.addEventListener("keydown", event => {
-            this.keydowns[event.key] = true
-        })
-        window.addEventListener("keyup", event => {
-            this.keydowns[event.key] = false
-        })
     }
 
     // 单例
     static instance(...args) {
         this.i = this.i || new this(...args)
         return this.i
-    }
-
-    drawImage(img) {
-        this.context.drawImage(img.image, img.x, img.y)
     }
 
     update() {
@@ -37,30 +23,25 @@ class GuaGame {
         this.scene.draw()
     }
 
-    registerAction(key, callback) {
-        this.actions[key] = callback
-    }
-
     runloop() {
         // events
-        var g = this
-        var actions = Object.keys(g.actions)
+        var actions = Object.keys(this.scene.actions)
         for (var i = 0; i < actions.length; i++) {
             var key = actions[i]
-            if (g.keydowns[key]) {
+            if (this.scene.keydowns[key]) {
                 // 如果按键被按下, 调用注册的 action
-                g.actions[key]()
+                this.scene.actions[key]()
             }
         }
         // update
-        g.update()
+        this.update()
         // clear
-        g.context.clearRect(0, 0, g.canvas.width, g.canvas.height)
+        this.scene.context.clearRect(0, 0, this.scene.canvas.width, this.scene.canvas.height)
         // draw
-        g.draw()
+        this.draw()
         // next run loop
-        setTimeout(function() {
-            g.runloop()
+        setTimeout(() => {
+            this.runloop()
         }, 1000 / window.fps)
     }
 
@@ -84,7 +65,7 @@ class GuaGame {
             }
         }
     }
-
+    //
     imageByName(name) {
         var g = this
         var img = g.images[name]
@@ -94,6 +75,11 @@ class GuaGame {
             image: img,
         }
         return image
+    }
+
+    textureByName(name) {
+        var img = this.images[name]
+        return img
     }
 
     runWithScene(scene) {

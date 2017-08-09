@@ -1,15 +1,15 @@
 class SceneEnd extends GuaScene {
     constructor(game) {
         super(game)
-        game.registerAction("r", function() {
-            var s = Scene.new(game)
+        this.registerAction("r", function() {
+            var s = SceneTitle.new(game)
             game.replaceScene(s)
         })
     }
 
     draw() {
         // draw labels
-        this.game.context.fillText('press "r" back to title', 100, 290)
+        this.context.fillText('press "r" back to title', 100, 290)
     }
 
     update() {}
