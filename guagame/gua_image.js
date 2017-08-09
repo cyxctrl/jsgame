@@ -9,4 +9,10 @@ class GuaImage {
     static new(game) {
         return new this(game)
     }
+
+    hasPoint(x, y) {
+        var xIn = x >= this.x && x <= this.x + this.w
+        var yIn = y >= this.y && y <= this.y + this.h
+        return xIn && yIn
+    }
 }

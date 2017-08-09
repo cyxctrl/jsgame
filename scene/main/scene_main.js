@@ -56,8 +56,6 @@ class SceneMain extends GuaScene {
         })
 
         this.canvas.addEventListener("mouseup", event => {
-            var x = event.offsetX
-            var y = event.offsetY
             this.enableDrag = false
         })
     }
