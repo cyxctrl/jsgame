@@ -1,6 +1,10 @@
 class Ball extends GuaImage{
     constructor(game) {
         super(game, 'ball')
+        this.setup()
+    }
+
+    setup() {
         this.x = 100
         this.y = 200
         this.speedX = 5
@@ -25,6 +29,7 @@ class Ball extends GuaImage{
             this.y += this.speedY
         }
     }
+    
     rebound() {
         this.speedY *= -1
     }

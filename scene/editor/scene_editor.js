@@ -1,11 +1,15 @@
 class SceneEditor extends GuaScene {
     constructor(game) {
         super(game)
+        this.setup()
+    }
+
+    setup() {
         this.blocks = []
         this.enableDrag = false
         this.movingBlock = null
 
-        this.setup()
+        this.setupActions()
     }
 
     addBlock() {
@@ -15,7 +19,7 @@ class SceneEditor extends GuaScene {
         this.elements.push(b)
     }
 
-    setup() {
+    setupActions() {
         window.addEventListener("keydown", event => {
             var key = event.key
             if (key == 'n') {
@@ -43,7 +47,6 @@ class SceneEditor extends GuaScene {
         })
 
         this.canvas.addEventListener("mousemove", event => {
-            // log('event', event)
             if (this.enableDrag) {
                 this.movingBlock.x = event.offsetX
                 this.movingBlock.y = event.offsetY
@@ -57,9 +60,9 @@ class SceneEditor extends GuaScene {
     }
 
     draw() {
-        this.drawElements()
         this.context.fillText('press "n" to add block', 100, 260)
         this.context.fillText('press "Enter" to start game', 100, 280)
+        super.draw()
     }
 
     update() {}

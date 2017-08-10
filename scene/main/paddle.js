@@ -1,6 +1,10 @@
 class Paddle extends GuaImage {
     constructor(game) {
         super(game, 'paddle')
+        this.setup()
+    }
+
+    setup() {
         this.x = 100
         this.y = 250
         this.speed = 15

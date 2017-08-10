@@ -1,21 +1,22 @@
 class SceneMain extends GuaScene {
     constructor(game) {
         super(game)
-        this.paddle = Paddle.new(game)
-        this.ball = Ball.new(game)
-        this.blocks = []
-        this.score = 0
-        this.enableDrag = false
         this.setup()
-        this.addElement(this.paddle)
-        this.addElement(this.ball)
-    }
-
-    static new(game) {
-        return new this(game)
     }
 
     setup() {
+        this.score = 0
+        this.enableDrag = false
+        this.blocks = []
+        this.paddle = Paddle.new(this.game)
+        this.ball = Ball.new(this.game)
+        this.addElement(this.paddle)
+        this.addElement(this.ball)
+
+        this.setupActions()
+    }
+
+    setupActions() {
         this.registerAction("a", () => {
             this.paddle.moveLeft()
         })
@@ -25,15 +26,12 @@ class SceneMain extends GuaScene {
         this.registerAction("f", () => {
             this.ball.fire()
         })
-
         this.registerAction("1", () => {
             this.blocks = loadLevel(this.game, 1)
         })
-
         this.registerAction("2", () => {
             this.blocks = loadLevel(this.game, 2)
         })
-
         this.registerAction("3", () => {
             this.blocks = loadLevel(this.game, 3)
         })
@@ -50,7 +48,6 @@ class SceneMain extends GuaScene {
         })
 
         this.canvas.addEventListener("mousemove", event => {
-            // log('event', event)
             if (this.enableDrag) {
                 this.ball.x = event.offsetX
                 this.ball.y = event.offsetY
@@ -75,23 +72,12 @@ class SceneMain extends GuaScene {
         // draw 背景
         this.context.fillStyle = "#fff"
         this.context.fillRect(0, 0, 400, 300)
-
-        this.drawElements()
-        this.drawBlocks()
-        // // draw
-        // this.drawImage(this.paddle)
-        // this.drawImage(this.ball)
-        //
-        // // draw blocks
-        // for (var i = 0; i < this.blocks.length; i++) {
-        //     var block = this.blocks[i]
-        //     if (block.alive) {
-        //         this.drawImage(block)
-        //     }
-        // }
         // draw labels
         this.context.fillStyle = "#000"
         this.context.fillText("分数: " + this.score, 10, 290)
+
+        this.drawBlocks()
+        super.draw()
     }
 
     update() {

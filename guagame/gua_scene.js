@@ -31,14 +31,10 @@ class GuaScene {
         this.actions[key] = callback
     }
 
-    drawElements() {
+    draw() {
         for (var i = 0; i < this.elements.length; i++) {
             this.drawImage(this.elements[i])
         }
-    }
-
-    draw() {
-        this.drawElements()
     }
 
     update() {}
