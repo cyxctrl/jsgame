@@ -5,6 +5,7 @@ class GuaScene {
         this.keydowns = {}
         this.canvas = document.querySelector("#id-canvas")
         this.context = this.canvas.getContext("2d")
+        this.elements = []
         // events
         window.addEventListener("keydown", event => {
             this.keydowns[event.key] = true
@@ -18,6 +19,10 @@ class GuaScene {
         return new this(game)
     }
 
+    addElement(element) {
+        this.elements.push(element)
+    }
+
     drawImage(img) {
         this.context.drawImage(img.image, img.x, img.y)
     }
@@ -26,7 +31,15 @@ class GuaScene {
         this.actions[key] = callback
     }
 
-    draw() {}
+    drawElements() {
+        for (var i = 0; i < this.elements.length; i++) {
+            this.drawImage(this.elements[i])
+        }
+    }
+
+    draw() {
+        this.drawElements()
+    }
 
     update() {}
 }

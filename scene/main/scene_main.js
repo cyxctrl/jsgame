@@ -3,10 +3,12 @@ class SceneMain extends GuaScene {
         super(game)
         this.paddle = Paddle.new(game)
         this.ball = Ball.new(game)
-        this.blocks = loadLevel(game, 1)
+        this.blocks = []
         this.score = 0
         this.enableDrag = false
         this.setup()
+        this.addElement(this.paddle)
+        this.addElement(this.ball)
     }
 
     static new(game) {
@@ -60,22 +62,33 @@ class SceneMain extends GuaScene {
         })
     }
 
-    draw() {
-        // draw 背景
-        this.context.fillStyle = "#fff"
-        this.context.fillRect(0, 0, 400, 300)
-
-        // draw
-        this.drawImage(this.paddle)
-        this.drawImage(this.ball)
-
-        // draw blocks
+    drawBlocks() {
         for (var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i]
             if (block.alive) {
                 this.drawImage(block)
             }
         }
+    }
+
+    draw() {
+        // draw 背景
+        this.context.fillStyle = "#fff"
+        this.context.fillRect(0, 0, 400, 300)
+
+        this.drawElements()
+        this.drawBlocks()
+        // // draw
+        // this.drawImage(this.paddle)
+        // this.drawImage(this.ball)
+        //
+        // // draw blocks
+        // for (var i = 0; i < this.blocks.length; i++) {
+        //     var block = this.blocks[i]
+        //     if (block.alive) {
+        //         this.drawImage(block)
+        //     }
+        // }
         // draw labels
         this.context.fillStyle = "#000"
         this.context.fillText("分数: " + this.score, 10, 290)

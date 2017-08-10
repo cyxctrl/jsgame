@@ -12,6 +12,7 @@ class SceneEditor extends GuaScene {
         var p = [0, 0]
         var b = Block.new(this.game, p)
         this.blocks.push(b)
+        this.elements.push(b)
     }
 
     setup() {
@@ -56,12 +57,9 @@ class SceneEditor extends GuaScene {
     }
 
     draw() {
+        this.drawElements()
         this.context.fillText('press "n" to add block', 100, 260)
         this.context.fillText('press "Enter" to start game', 100, 280)
-        for (var i = 0; i < this.blocks.length; i++) {
-            var b = this.blocks[i]
-            this.drawImage(b)
-        }
     }
 
     update() {}
