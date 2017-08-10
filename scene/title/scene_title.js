@@ -1,14 +1,23 @@
 class SceneTitle extends GuaScene {
     constructor(game) {
         super(game)
-        this.registerAction("k", function() {
-            var s = SceneMain.new(game)
-            game.replaceScene(s)
+        this.setup()
+    }
+
+    setup() {
+        this.setupActions()
+    }
+
+    setupActions() {
+        this.registerKeyboardAction("k", () => {
+            var s = SceneMain.new(this.game)
+            this.game.replaceScene(s)
         })
-        this.registerAction("e", function() {
-            var s = SceneEditor.new(game)
-            game.replaceScene(s)
+        this.registerKeyboardAction("e", () => {
+            var s = SceneEditor.new(this.game)
+            this.game.replaceScene(s)
         })
+        super.setupActions()
     }
 
     draw() {

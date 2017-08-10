@@ -13,50 +13,50 @@ class SceneMain extends GuaScene {
         this.addElement(this.paddle)
         this.addElement(this.ball)
 
+        this.mouseActions = {
+            "mousedown":  event => {
+                var x = event.offsetX
+                var y = event.offsetY
+                // 检查是否点中了 ball
+                if (this.ball.hasPoint(x, y)) {
+                    // 设置拖拽状态
+                    this.enableDrag = true
+                }
+            },
+            "mousemove":  event => {
+                if (this.enableDrag) {
+                    this.ball.x = event.offsetX
+                    this.ball.y = event.offsetY
+                }
+            },
+            "mouseup":  event => {
+                this.enableDrag = false
+            },
+        }
         this.setupActions()
     }
 
     setupActions() {
-        this.registerAction("a", () => {
+        this.registerKeyboardAction("a", () => {
             this.paddle.moveLeft()
         })
-        this.registerAction("d", () => {
+        this.registerKeyboardAction("d", () => {
             this.paddle.moveRight()
         })
-        this.registerAction("f", () => {
+        this.registerKeyboardAction("f", () => {
             this.ball.fire()
         })
-        this.registerAction("1", () => {
+        this.registerKeyboardAction("1", () => {
             this.blocks = loadLevel(this.game, 1)
         })
-        this.registerAction("2", () => {
+        this.registerKeyboardAction("2", () => {
             this.blocks = loadLevel(this.game, 2)
         })
-        this.registerAction("3", () => {
+        this.registerKeyboardAction("3", () => {
             this.blocks = loadLevel(this.game, 3)
         })
 
-        // mouse event
-        this.canvas.addEventListener("mousedown", event => {
-            var x = event.offsetX
-            var y = event.offsetY
-            // 检查是否点中了 ball
-            if (this.ball.hasPoint(x, y)) {
-                // 设置拖拽状态
-                this.enableDrag = true
-            }
-        })
-
-        this.canvas.addEventListener("mousemove", event => {
-            if (this.enableDrag) {
-                this.ball.x = event.offsetX
-                this.ball.y = event.offsetY
-            }
-        })
-
-        this.canvas.addEventListener("mouseup", event => {
-            this.enableDrag = false
-        })
+        super.setupActions()
     }
 
     drawBlocks() {
