@@ -1,11 +1,16 @@
 class Block extends GuaImage {
     constructor(game, position) {
         super(game, 'block')
-        this.alive = true
+        this.setup(position)
+    }
+
+    setup(position) {
         var p = position
         this.x = p[0]
         this.y = p[1]
         this.lifes = p[2] || 1
+        this.alive = true
+        this.speed = config.block_speed
     }
 
     static new(game, position) {
@@ -21,5 +26,16 @@ class Block extends GuaImage {
 
     collide(b) {
         return this.alive && (rectIntersects(this, b) || rectIntersects(b, this))
+    }
+
+    move() {
+        if (this.x > 400) {
+            this.x = 0
+        } else if (this.x < 0) {
+            this.x = 400
+        }
+        else {
+            this.x += this.speed
+        }
     }
 }

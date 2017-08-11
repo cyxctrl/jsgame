@@ -1,84 +1,87 @@
 class SceneMain extends GuaScene {
     constructor(game) {
         super(game)
-        this.paddle = Paddle.new(game)
-        this.ball = Ball.new(game)
-        this.blocks = loadLevel(game, 1)
-        this.score = 0
-        this.enableDrag = false
         this.setup()
     }
 
-    static new(game) {
-        return new this(game)
+    setup() {
+        this.started = false
+        this.score = 0
+        this.enableDrag = false
+        this.blocks = []
+        this.paddle = Paddle.new(this.game)
+        this.ball = Ball.new(this.game)
+        this.addElement(this.paddle)
+        this.addElement(this.ball)
+
+        this.mouseActions = {
+            "mousedown":  event => {
+                var x = event.offsetX
+                var y = event.offsetY
+                // 检查是否点中了 ball
+                if (this.ball.hasPoint(x, y)) {
+                    // 设置拖拽状态
+                    this.enableDrag = true
+                }
+            },
+            "mousemove":  event => {
+                if (this.enableDrag) {
+                    this.ball.x = event.offsetX
+                    this.ball.y = event.offsetY
+                }
+            },
+            "mouseup":  event => {
+                this.enableDrag = false
+            },
+        }
+        this.setupActions()
     }
 
-    setup() {
-        this.registerAction("a", () => {
+    setupActions() {
+        this.registerKeyboardAction("a", () => {
             this.paddle.moveLeft()
         })
-        this.registerAction("d", () => {
+        this.registerKeyboardAction("d", () => {
             this.paddle.moveRight()
         })
-        this.registerAction("f", () => {
-            this.ball.fire()
+        this.registerKeyboardAction("f", () => {
+            this.started = true
         })
-
-        this.registerAction("1", () => {
+        this.registerKeyboardAction("1", () => {
             this.blocks = loadLevel(this.game, 1)
         })
-
-        this.registerAction("2", () => {
+        this.registerKeyboardAction("2", () => {
             this.blocks = loadLevel(this.game, 2)
         })
-
-        this.registerAction("3", () => {
+        this.registerKeyboardAction("3", () => {
             this.blocks = loadLevel(this.game, 3)
         })
 
-        // mouse event
-        this.canvas.addEventListener("mousedown", event => {
-            var x = event.offsetX
-            var y = event.offsetY
-            // 检查是否点中了 ball
-            if (this.ball.hasPoint(x, y)) {
-                // 设置拖拽状态
-                this.enableDrag = true
-            }
-        })
-
-        this.canvas.addEventListener("mousemove", event => {
-            // log('event', event)
-            if (this.enableDrag) {
-                this.ball.x = event.offsetX
-                this.ball.y = event.offsetY
-            }
-        })
-
-        this.canvas.addEventListener("mouseup", event => {
-            this.enableDrag = false
-        })
+        super.setupActions()
     }
 
-    draw() {
-        // draw 背景
-        this.context.fillStyle = "#fff"
-        this.context.fillRect(0, 0, 400, 300)
-
-        // draw
-        this.drawImage(this.paddle)
-        this.drawImage(this.ball)
-
-        // draw blocks
+    drawBlocks() {
         for (var i = 0; i < this.blocks.length; i++) {
             var block = this.blocks[i]
             if (block.alive) {
                 this.drawImage(block)
             }
         }
+    }
+
+    draw() {
+        // draw 背景
+        this.context.fillStyle = "#fff"
+        this.context.fillRect(0, 0, 400, 300)
         // draw labels
         this.context.fillStyle = "#000"
-        this.context.fillText("分数: " + this.score, 10, 290)
+        if (this.started) {
+            this.context.fillText("score: " + this.score, 10, 290)
+        } else {
+            this.context.fillText('press "f" to start game', 10, 290)
+        }
+        this.drawBlocks()
+        super.draw()
     }
 
     update() {
@@ -86,13 +89,10 @@ class SceneMain extends GuaScene {
             return
         }
 
-        this.ball.move()
-        // 判断游戏结束
-        if (this.ball.y > this.paddle.y) {
-            // 跳转到 游戏结束 的场景
-            var end = SceneEnd.new(this.game)
-            this.game.replaceScene(end)
+        if (this.started) {
+            this.move()
         }
+
         // 判断相撞
         if (this.paddle.collide(this.ball)) {
             // 这里应该调用一个 ball.反弹() 来实现
@@ -108,5 +108,21 @@ class SceneMain extends GuaScene {
                 this.score += 100
             }
         }
+
+        // 判断游戏结束
+        if (this.ball.y > this.paddle.y) {
+            // 跳转到 游戏结束 的场景
+            var end = SceneEnd.new(this.game)
+            this.game.replaceScene(end)
+        }
+    }
+
+    move() {
+        for (var i = 0; i < this.blocks.length; i++) {
+            var b = this.blocks[i]
+            b.speed = config.block_speed
+            b.move()
+        }
+        this.ball.move()
     }
 }

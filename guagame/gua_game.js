@@ -25,12 +25,12 @@ class GuaGame {
 
     runloop() {
         // events
-        var actions = Object.keys(this.scene.actions)
+        var actions = Object.keys(this.scene.keyboardActions)
         for (var i = 0; i < actions.length; i++) {
             var key = actions[i]
             if (this.scene.keydowns[key]) {
                 // 如果按键被按下, 调用注册的 action
-                this.scene.actions[key]()
+                this.scene.keyboardActions[key]()
             }
         }
         // update

@@ -1,10 +1,19 @@
 class SceneEnd extends GuaScene {
     constructor(game) {
         super(game)
-        this.registerAction("r", function() {
-            var s = SceneTitle.new(game)
-            game.replaceScene(s)
+        this.setup()
+    }
+
+    setup() {
+        this.setupActions()
+    }
+
+    setupActions() {
+        this.registerKeyboardAction("r", () => {
+            var s = SceneTitle.new(this.game)
+            this.game.replaceScene(s)
         })
+        super.setupActions()
     }
 
     draw() {
