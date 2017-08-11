@@ -5,6 +5,7 @@ class SceneMain extends GuaScene {
     }
 
     setup() {
+        this.started = false
         this.score = 0
         this.enableDrag = false
         this.blocks = []
@@ -44,7 +45,7 @@ class SceneMain extends GuaScene {
             this.paddle.moveRight()
         })
         this.registerKeyboardAction("f", () => {
-            this.ball.fire()
+            this.started = true
         })
         this.registerKeyboardAction("1", () => {
             this.blocks = loadLevel(this.game, 1)
@@ -74,7 +75,8 @@ class SceneMain extends GuaScene {
         this.context.fillRect(0, 0, 400, 300)
         // draw labels
         this.context.fillStyle = "#000"
-        this.context.fillText("分数: " + this.score, 10, 290)
+        this.context.fillText("score: " + this.score, 10, 290)
+        this.context.fillText('press "f" to start game', 200, 290)
 
         this.drawBlocks()
         super.draw()
@@ -84,10 +86,11 @@ class SceneMain extends GuaScene {
         if (window.paused) {
             return
         }
-
-        this.ball.move()
+        if (this.started) {
+            this.move()
+        }
         // 判断游戏结束
-        if (this.ball.y > this.paddle.y) {
+        if (this.ball.y == 300) {
             // 跳转到 游戏结束 的场景
             var end = SceneEnd.new(this.game)
             this.game.replaceScene(end)
@@ -107,5 +110,12 @@ class SceneMain extends GuaScene {
                 this.score += 100
             }
         }
+    }
+
+    move() {
+        for (var i = 0; i < this.blocks.length; i++) {
+            this.blocks[i].move()
+        }
+        this.ball.move()
     }
 }
