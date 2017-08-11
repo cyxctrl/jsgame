@@ -75,9 +75,11 @@ class SceneMain extends GuaScene {
         this.context.fillRect(0, 0, 400, 300)
         // draw labels
         this.context.fillStyle = "#000"
-        this.context.fillText("score: " + this.score, 10, 290)
-        this.context.fillText('press "f" to start game', 200, 290)
-
+        if (this.started) {
+            this.context.fillText("score: " + this.score, 10, 290)
+        } else {
+            this.context.fillText('press "f" to start game', 10, 290)
+        }
         this.drawBlocks()
         super.draw()
     }
@@ -86,15 +88,11 @@ class SceneMain extends GuaScene {
         if (window.paused) {
             return
         }
+
         if (this.started) {
             this.move()
         }
-        // 判断游戏结束
-        if (this.ball.y == 300) {
-            // 跳转到 游戏结束 的场景
-            var end = SceneEnd.new(this.game)
-            this.game.replaceScene(end)
-        }
+
         // 判断相撞
         if (this.paddle.collide(this.ball)) {
             // 这里应该调用一个 ball.反弹() 来实现
@@ -110,11 +108,20 @@ class SceneMain extends GuaScene {
                 this.score += 100
             }
         }
+
+        // 判断游戏结束
+        if (this.ball.y > this.paddle.y) {
+            // 跳转到 游戏结束 的场景
+            var end = SceneEnd.new(this.game)
+            this.game.replaceScene(end)
+        }
     }
 
     move() {
         for (var i = 0; i < this.blocks.length; i++) {
-            this.blocks[i].move()
+            var b = this.blocks[i]
+            b.speed = config.block_speed
+            b.move()
         }
         this.ball.move()
     }

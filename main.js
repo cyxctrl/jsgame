@@ -1,3 +1,7 @@
+const config = {
+    block_speed: 5,
+}
+
 var loadLevel = function(game, n) {
     n = n - 1
     var level = levels[n]

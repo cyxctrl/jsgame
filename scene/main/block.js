@@ -10,7 +10,7 @@ class Block extends GuaImage {
         this.y = p[1]
         this.lifes = p[2] || 1
         this.alive = true
-        this.speed = 3
+        this.speed = config.block_speed
     }
 
     static new(game, position) {
@@ -31,7 +31,10 @@ class Block extends GuaImage {
     move() {
         if (this.x > 400) {
             this.x = 0
-        } else {
+        } else if (this.x < 0) {
+            this.x = 400
+        }
+        else {
             this.x += this.speed
         }
     }

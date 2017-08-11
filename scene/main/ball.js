@@ -9,7 +9,6 @@ class Ball extends GuaImage {
         this.y = 200
         this.speedX = 5
         this.speedY = 5
-        this.fired = false
     }
 
     move() {

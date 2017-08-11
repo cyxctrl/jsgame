@@ -35,7 +35,38 @@
     <div class="">
         <!-- <textarea id="id-text-log" rows="20" cols="50"></textarea> -->
     </div>
+    <div class="">
+        <label>
+            <input class="gua-auto-slider" type="range"
+            value="5"
+            data-value="config.block_speed" max="10" min="-10"
+            >
+            block speed: <span class="gua-label"></span>
+        </label>
+    </div>
     <script src="main.js"></script>
+    <script>
+        var es = sel => document.querySelectorAll(sel)
+        var bindAll = function(sel, eventName, callback) {
+            var l = es(sel)
+            for (var i = 0; i < l.length; i++) {
+                var input = l[i]
+                input.addEventListener(eventName, function(event) {
+                    callback(event)
+                })
+            }
+        }
+
+        bindAll('.gua-auto-slider', 'input', function(event) {
+            var target = event.target
+            var bindVar = target.dataset.value
+            var v = target.value
+            eval(bindVar + '=' + v)
+            //
+            var label = target.closest('label').querySelector('.gua-label')
+            label.innerText = v
+        })
+    </script>
 </body>
 
 </html>
